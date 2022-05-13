@@ -1,0 +1,54 @@
+#版本1.0
+spring:
+  application:
+    name: springcloud-consumer
+  #zipkin
+  zipkin:
+    base-url: http://localhost:9411/
+    #采样比例1
+  sleuth:
+    sampler:
+      rate: 1
+  boot:
+    admin:
+      client:
+        url: http://localhost:9999
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:7900/eureka/
+#ribbon:
+  #连接超时(ms)
+  #ConnectTimeout: 5000
+  #通信超时(ms)  (业务超时)
+  #ReadTimeout: 5000
+  #同一个实例,最大重试次数,不包括首次(针对单节点)
+  #MaxAutoRetries: 1
+  #负载均衡重试其他实例的最大次数,不包括首次(针对集群,如果某一个实例超时,那么会重新调另外一个实例)
+  #MaxAutoRetriesNextServer: 1
+  #是否所有操作都重试
+  #OkToRetryOnAllOperations: false
+
+#feign整合hystrix,默认是false
+feign:
+  hystrix:
+    enabled: false
+#hystrix用的是线程隔离,这个配置能看到服务调用方开启多少个线程去用http请求服务提供者
+hystrix:
+  #hystrix仪表盘允许监控地址列表
+  dashboard:
+    proxy-stream-allow-list: "localhost"
+      #command:
+      #default:
+      #execution:
+      #isolation:
+    #信号量隔离策略
+    #strategy: SEMAPHORE
+#actuator监控端点默只开几个,这里手动开启'*'所有
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+    health:
+      show-details: always
